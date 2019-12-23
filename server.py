@@ -67,9 +67,9 @@ def message_received(client, server, message):
 	client_list_json = json.dumps(clients_list)
 	server.send_message_to_all(client_list_json)
 
-
-PORT=os.environ['PORT']
-print(PORT)
+port_ = os.environ['PORT']
+PORT=int(port_)
+print(port_)
 print('Server run')
 server = WebsocketServer(PORT)
 server.set_fn_new_client(new_client)
