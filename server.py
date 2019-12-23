@@ -1,6 +1,7 @@
 from websocket_server import WebsocketServer
 from random import randrange
 import json
+import os
 
 # список клиентов
 clients_list = []
@@ -67,7 +68,8 @@ def message_received(client, server, message):
 	server.send_message_to_all(client_list_json)
 
 
-PORT=15000
+PORT=os.environ['PORT']
+print(PORT)
 print('Server run')
 server = WebsocketServer(PORT)
 server.set_fn_new_client(new_client)
