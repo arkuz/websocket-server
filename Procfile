@@ -1,1 +1,1 @@
-worker: python server.py -p $PORT
+worker: python server.py
