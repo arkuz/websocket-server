@@ -1,1 +1,1 @@
-web: python server.py -p 15000
+worker: python server.py -p 15000
