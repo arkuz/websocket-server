@@ -68,7 +68,7 @@ def message_received(client, server, message):
 	server.send_message_to_all(client_list_json)
 
 
-PORT=15000
+PORT=80
 print('Server run')
 server = WebsocketServer(PORT)
 server.set_fn_new_client(new_client)
