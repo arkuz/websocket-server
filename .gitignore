@@ -4,3 +4,6 @@
 .tox
 .env
 *.egg-info
+.idea
+venv
+
