@@ -112,8 +112,16 @@ def message_received(client, server, message):
     server.send_message_to_all(client_list_json)
 
 
+
+from sys import platform
+print(platform.lower())
+if "win" in platform.lower():
+    HOST = '127.0.0.1'
+if "linux" in platform.lower():
+    HOST = '0.0.0.0'
+
 PORT = 15000
-HOST = '0.0.0.0'
+
 print('Server run')
 server = WebsocketServer(PORT, HOST)
 server.set_fn_new_client(new_client)
