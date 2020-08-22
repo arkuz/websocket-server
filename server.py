@@ -51,7 +51,16 @@ def client_left(client, server):
 def message_received(client, server, message):
     print("Client(%d) said: %s" % (client['id'], message))
 
-    msg_dict = json.loads(message)
+    try:
+        msg_dict = json.loads(message)
+    except ValueError:
+        print('Error JSON: ' + str(message))
+        return
+
+    print(type(msg_dict))
+    if not isinstance(msg_dict, dict):
+        print('Error JSON: ' + str(message))
+        return
 
     # присваиваем имя
     new_client = None
