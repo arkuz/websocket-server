@@ -5,6 +5,9 @@ import json
 # список клиентов
 clients_list = []
 
+def get_client_id(client):
+    id = hash(client['address'])
+    return id
 
 # Called for every client connecting (after handshake)
 def new_client(client, server):
@@ -12,7 +15,7 @@ def new_client(client, server):
 
     # инициализируем только что подключенного клиента
     client_info = {
-        'id': hash(client['address']),
+        'id': get_client_id(client),
         'x': randrange(2001), #2001
         'y': randrange(2001),
     }
@@ -20,7 +23,7 @@ def new_client(client, server):
     # добавляем нового клиента в список клиентов
     flag = False
     for item in clients_list:
-        if item['id'] == hash(client['address']):
+        if item['id'] == get_client_id(client):
             flag = True
             break
     if not flag:
@@ -30,9 +33,9 @@ def new_client(client, server):
     full_info = {}
     full_info['me'] = client_info
     full_info['clients'] = clients_list
-    print('new_client = ' + str(full_info))
     # отправляем клиенту его id, координаты и список всех клиентов
     full_info_json = json.dumps(full_info)
+    print(full_info)
     server.send_message(client, full_info_json)
 
 
@@ -40,9 +43,9 @@ def new_client(client, server):
 def client_left(client, server):
     print("Client(%d) disconnected" % client['id'])
     for item in clients_list:
-        if item['id'] == hash(client['address']):
+        if item['id'] == get_client_id(client):
             clients_list.remove(item)
-            disconnected = json.dumps({'disconnected': hash(client['address'])})
+            disconnected = json.dumps({'disconnected': get_client_id(client)})
             server.send_message_to_all(disconnected)
             break
 
@@ -57,7 +60,6 @@ def message_received(client, server, message):
         print('Error JSON: ' + str(message))
         return
 
-    print(type(msg_dict))
     if not isinstance(msg_dict, dict):
         print('Error JSON: ' + str(message))
         return
@@ -66,7 +68,7 @@ def message_received(client, server, message):
     new_client = None
     if 'name' in msg_dict:
         for item in clients_list:
-            client_id = hash(client['address'])
+            client_id = get_client_id(client)
             if item['id'] == client_id:
                 new_client = item
                 item['name'] = msg_dict['name']
@@ -77,7 +79,7 @@ def message_received(client, server, message):
     # принимаем координаты от клиента и обновляем их в списке клиентов
     if 'position' in msg_dict:
         for item in clients_list:
-            client_id = hash(client['address'])
+            client_id = get_client_id(client)
             if item['id'] == client_id:
                 item['x'] = msg_dict['position']['x']
                 item['y'] = msg_dict['position']['y']
@@ -102,6 +104,7 @@ def message_received(client, server, message):
     if 'bullet_collision' in msg_dict:
         msg_dict = msg_dict['bullet_collision']
         for item in clients_list:
+            print(f"client_id: {msg_dict['id']} == item_id: {item['id']}")
             if item['id'] == msg_dict['id']:
                 if ((msg_dict['x'] >= item['x'] - msg_dict['width'] / 2) and (msg_dict['x'] <= item['x'] + msg_dict['width'] / 2)) and \
                         ((msg_dict['y'] >= item['y'] - msg_dict['height'] / 2) and (msg_dict['y'] <= item['y'] + msg_dict['height'] / 2)):
@@ -120,9 +123,7 @@ def message_received(client, server, message):
 
 
 from sys import platform
-print(platform.lower())
-if "win" in platform.lower():
-    HOST = '127.0.0.1'
+HOST = '127.0.0.1'
 if "linux" in platform.lower():
     HOST = '0.0.0.0'
 
