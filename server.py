@@ -6,7 +6,8 @@ import json
 clients_list = []
 
 def get_client_id(client):
-    id = hash(client['address'])
+    #id = hash(client['address'])
+    id = client['address'][1]
     return id
 
 # Called for every client connecting (after handshake)
@@ -19,6 +20,7 @@ def new_client(client, server):
         'x': randrange(2001), #2001
         'y': randrange(2001),
     }
+    print(client_info)
 
     # добавляем нового клиента в список клиентов
     flag = False
