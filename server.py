@@ -139,5 +139,7 @@ if __name__ == "__main__":
         server.set_fn_client_left(client_left)
         server.set_fn_message_received(message_received)
         server.run_forever()
-    except BrokenPipeError:
-        print('Error: BrokenPipeError');
+    except Exception as e:
+        print('---------------------')
+        print('Error: ' + str(e))
+        print('---------------------')
