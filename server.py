@@ -105,13 +105,10 @@ def message_received(client, server, message):
             if item['id'] == msg_dict['id']:
                 if ((msg_dict['x'] >= item['x'] - msg_dict['width'] / 2) and (msg_dict['x'] <= item['x'] + msg_dict['width'] / 2)) and \
                         ((msg_dict['y'] >= item['y'] - msg_dict['height'] / 2) and (msg_dict['y'] <= item['y'] + msg_dict['height'] / 2)):
+                    clients_list.remove(item)
                     killed = json.dumps({'killed': msg_dict['id']})
                     print(killed)
                     server.send_message_to_all(killed)
-
-                    #disconnected = json.dumps({'disconnected': msg_dict['id']})
-                    #server.send_message_to_all(disconnected)
-
                     break
 
 
