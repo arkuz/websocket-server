@@ -13,7 +13,7 @@ def new_client(client, server):
     # инициализируем только что подключенного клиента
     client_info = {
         'id': hash(client['address']),
-        'x': randrange(2001),
+        'x': randrange(2001), #2001
         'y': randrange(2001),
     }
 
@@ -99,6 +99,10 @@ def message_received(client, server, message):
                     killed = json.dumps({'killed': msg_dict['id']})
                     print(killed)
                     server.send_message_to_all(killed)
+
+                    #disconnected = json.dumps({'disconnected': msg_dict['id']})
+                    #server.send_message_to_all(disconnected)
+
                     break
 
 
@@ -109,8 +113,9 @@ def message_received(client, server, message):
 
 
 PORT = 15000
+HOST = '0.0.0.0'
 print('Server run')
-server = WebsocketServer(PORT)
+server = WebsocketServer(PORT, HOST)
 server.set_fn_new_client(new_client)
 server.set_fn_client_left(client_left)
 server.set_fn_message_received(message_received)
