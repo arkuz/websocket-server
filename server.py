@@ -131,9 +131,10 @@ if "linux" in platform.lower():
 
 PORT = 15000
 
-print('Server run')
-server = WebsocketServer(PORT, HOST)
-server.set_fn_new_client(new_client)
-server.set_fn_client_left(client_left)
-server.set_fn_message_received(message_received)
-server.run_forever()
+if __name__ == "__main__":
+    print('Server run')
+    server = WebsocketServer(PORT, HOST)
+    server.set_fn_new_client(new_client)
+    server.set_fn_client_left(client_left)
+    server.set_fn_message_received(message_received)
+    server.run_forever()
