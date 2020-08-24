@@ -1,6 +1,9 @@
 from websocket_server import WebsocketServer
+
+from sys import platform
 from random import randrange
 import json
+import logging
 
 # список клиентов
 clients_list = []
@@ -124,7 +127,7 @@ def message_received(client, server, message):
 
 
 
-from sys import platform
+
 HOST = '127.0.0.1'
 if "linux" in platform.lower():
     HOST = '0.0.0.0'
@@ -132,14 +135,9 @@ if "linux" in platform.lower():
 PORT = 15000
 
 if __name__ == "__main__":
-    try:
-        print('Server run')
-        server = WebsocketServer(PORT, HOST)
-        server.set_fn_new_client(new_client)
-        server.set_fn_client_left(client_left)
-        server.set_fn_message_received(message_received)
-        server.run_forever()
-    except Exception as e:
-        print('---------------------')
-        print('Error: ' + str(e))
-        print('---------------------')
+	print('Server run')
+	server = WebsocketServer(PORT, HOST, logging.DEBUG)
+	server.set_fn_new_client(new_client)
+	server.set_fn_client_left(client_left)
+	server.set_fn_message_received(message_received)
+	server.run_forever()
